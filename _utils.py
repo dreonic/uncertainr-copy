@@ -139,7 +139,7 @@ def write_uncertain_experiment_vals(
         plt.ylabel(f"Histogram Density", fontsize=15)
         plt.xlabel("NLL", fontsize=15)
         plt.title(f"{view_str}, {model_str}", fontsize=15)
-        plt.yscale("log", nonposy="clip")
+        plt.yscale("log", nonpositive="clip")
         plt.ylim((1e-5, 0.5))
 
         if scan_id is None:
