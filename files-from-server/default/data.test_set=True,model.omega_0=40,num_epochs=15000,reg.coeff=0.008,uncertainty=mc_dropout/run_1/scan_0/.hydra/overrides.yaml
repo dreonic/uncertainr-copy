@@ -1,0 +1,5 @@
+- uncertainty=mc_dropout
+- reg.coeff=0.008
+- model.omega_0=40
+- num_epochs=15000
+- data.test_set=True

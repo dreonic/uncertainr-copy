@@ -16,7 +16,7 @@ steps_til_summary: 100
 save_last_ckpt: False
 dir_name: uncertainr-copy
 paths:
-    repo: /workspace/project/${dir_name} # Change for your filesystem.
+    repo: /root/project/${dir_name} # Change for your filesystem.
     data: ${paths.repo}/data
     plots_dir_name: plots
     experiments: experiments
