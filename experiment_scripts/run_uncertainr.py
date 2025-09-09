@@ -218,9 +218,15 @@ def main(args):
                 for key, val in test_loss_dct.items():
                     avg_scan_uncertainty[key] += val
             for key, val in test_loss_dct.items():
-                val_cpu = val.cpu() if torch.is_tensor(val) else val
+                # Convert tensor to CPU and extract scalar value properly
+                if torch.is_tensor(val):
+                    val_cpu = val.cpu().item()
+                else:
+                    val_cpu = val
+                
                 np.savetxt(
-                    os.path.join(results_dir, f"{key}_{scan_id}.txt"), np.array([val_cpu])
+                    os.path.join(results_dir, f"{key}_{scan_id}.txt"),
+                    [val_cpu]
                 )
 
         # Modify test_loss_dct to log output for this scan_id
@@ -241,16 +247,21 @@ def main(args):
 
         torch.cuda.empty_cache()
 
+    
     for key, val in avg_scan_uncertainty.items():
         avg_scan_uncertainty[key] = val / len(scan_ids)
-        # Ensure val is moved to CPU if it's a tensor
-        val_cpu = avg_scan_uncertainty[key].cpu() if torch.is_tensor(avg_scan_uncertainty[key]) else avg_scan_uncertainty[key]
+        
+        if torch.is_tensor(avg_scan_uncertainty[key]):
+            val_cpu = avg_scan_uncertainty[key].cpu().item()
+        else:
+            val_cpu = avg_scan_uncertainty[key]
+        
         np.savetxt(
             os.path.join(results_dir, f"{key}_avg.txt"),
-            np.array([val_cpu]),
+            [val_cpu],  # Use list instead of np.array
         )
     wandb.log(avg_scan_uncertainty)
-    wandb.close()
+    wandb.finish()
 
 
 if __name__ == "__main__":
