@@ -1,5 +1,5 @@
 defaults:
-    - data: aapm_2d
+    - data: shepp_2d
     - model: mlp
     - uncertainty: mc_dropout
     - opt: adam
